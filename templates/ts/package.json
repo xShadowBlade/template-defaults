@@ -1,0 +1,41 @@
+{
+  "name": "ts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xShadowBlade/template-defaults.git"
+  },
+  "author": "xShadowBlade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xShadowBlade/template-defaults/issues"
+  },
+  "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-jsdoc": "^46.9.0",
+    "prettier": "^3.0.3",
+    "prettier-eslint": "^16.1.1",
+    "typescript": "^5.2.2"
+  }
+}

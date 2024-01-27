@@ -1,0 +1,23 @@
+{
+  "name": "template-defaults",
+  "version": "0.1.0",
+  "description": "Template scripts to start my projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xShadowBlade/template-defaults.git"
+  },
+  "author": "xShadowBlade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xShadowBlade/template-defaults/issues"
+  },
+  "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "prompt-sync": "^4.2.0"
+  }
+}
