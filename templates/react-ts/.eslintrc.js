@@ -64,6 +64,8 @@ const options = {
     "extends": [
         "eslint:recommended",
         "prettier",
+        "plugin:react/recommended",
+        "react-app",
         "plugin:jsdoc/recommended-typescript",
         "plugin:@typescript-eslint/recommended",
     ],

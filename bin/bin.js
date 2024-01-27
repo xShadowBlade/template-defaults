@@ -33,7 +33,17 @@ if (flags["d"] || flags["debug"]) console.log("Args:", args, "\n", "Flags:", fla
 /**
  * Represents the main entry point for the CLI tool.
  */
-let [, projectType, projectDir, projectName, projectGitRepo] = args;
+let [, projectType, projectDir, projectName, projectGitRepo, copyEslint] = args;
+
+// TODO: Add help message.
+if (flags["h"] || flags["help"]) {
+    console.log("Coming soon! For now, see https://github.com/xShadowBlade/template-defaults");
+    cancel("", 0);
+}
+
+// if (flags["y"] || flags["yes"]) {
+//      
+// }
 
 console.log("This CLI tool will create a new project in the specified directory.");
 console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
