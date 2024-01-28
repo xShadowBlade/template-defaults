@@ -24,7 +24,7 @@ module.exports = (env, argv) => {
             path: path.resolve(__dirname, "dist"),
             filename: "bundle.js", // Output bundle file name
         },
-        // devtool: mode === "development" ? "source-map" : "none",
+        devtool: mode === "development" ? "eval-cheap-module-source-map" : "none",
         resolve: {
             extensions: [".css", ".tsx", ".ts", ".js", "..."],
         },

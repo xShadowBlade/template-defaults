@@ -19,12 +19,12 @@ module.exports = (env, argv) => {
      * @type {import("webpack").Configuration}
      */
     const options = {
-        entry: "./src/index.ts", // Entry point of your application
+        entry: "./src/index.tsx", // Entry point of your application
         output: {
             path: path.resolve(__dirname, "dist"),
             filename: "bundle.js", // Output bundle file name
         },
-        // devtool: mode === "development" ? "source-map" : "none",
+        devtool: mode === "development" ? "eval-cheap-module-source-map" : "none",
         resolve: {
             extensions: [".css", ".tsx", ".ts", ".js", "..."],
         },
