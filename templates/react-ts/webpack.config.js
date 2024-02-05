@@ -11,6 +11,8 @@ require("webpack-dev-server");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlReplaceWebpackPlugin = require("html-replace-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = (env, argv) => {
     console.log("Args:", argv);
@@ -21,12 +23,17 @@ module.exports = (env, argv) => {
     const options = {
         entry: "./src/index.tsx", // Entry point of your application
         output: {
-            path: path.resolve(__dirname, "dist"),
+            path: path.resolve(__dirname, "build"),
             filename: "bundle.js", // Output bundle file name
         },
-        devtool: mode === "development" ? "eval-cheap-module-source-map" : "none",
         resolve: {
             extensions: [".css", ".tsx", ".ts", ".js", "..."],
+            alias: {
+                // "@": path.resolve(__dirname, "src"),
+                // Uncomment the following if you use emath.js
+                // "emath.js": "emath.js/ts",
+                // "emath.js/game": "emath.js/ts/game",
+            },
         },
         // watch: true,
         // watchOptions: {
@@ -47,8 +54,15 @@ module.exports = (env, argv) => {
                     },
                 },
                 {
-                    test: /\.css$/i,
-                    use: ["css-loader"],
+                    // If you enable `experiments.css` or `experiments.futureDefaults`, please uncomment line below
+                    // type: "javascript/auto",
+                    test: /\.(sa|sc|c)ss$/i,
+                    use: [
+                        mode === "development" ? "style-loader" : MiniCssExtractPlugin.loader,
+                        "css-loader",
+                        // "postcss-loader",
+                        // "sass-loader",
+                    ],
                 },
             ],
         },
@@ -57,6 +71,7 @@ module.exports = (env, argv) => {
                 new EsbuildPlugin({
                     target: "es2015", // Syntax to transpile to (see options below for possible values)
                 }),
+                new CssMinimizerPlugin(),
             ],
         },
         plugins: [
@@ -99,7 +114,16 @@ module.exports = (env, argv) => {
                     },
                 ],
             }),
+            new MiniCssExtractPlugin(),
         );
+    } else if (mode === "development") {
+        options.devtool = "eval-cheap-module-source-map";
+        // options.devServer = {
+        //     contentBase: path.join(__dirname, "build"),
+        //     compress: true,
+        //     port: 3000,
+        //     historyApiFallback: true,
+        // };
     }
     return options;
 };

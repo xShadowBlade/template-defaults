@@ -1,7 +1,9 @@
 {
 	"compilerOptions": {
-        "jsx": "react",
+        // "jsx": "react", // Uncomment if you use react
 		"allowJs": true,
+		// "emitDecoratorMetadata": true, // Uncomment if you use emath.js
+        // "experimentalDecorators": true, // Uncomment if you use emath.js
 		"target": "ES5",
 		"module": "NodeNext",
 		"strict": true,
