@@ -17,7 +17,7 @@ const [args, flags] = (() => {
     const argsA = [];
     const flagsA = {};
     argv.forEach((item) => {
-        if (item.match(/(-|--)+/)) { // If it is a flag
+        if (item.match(/^(-|--)/)) { // If it is a flag
             item = item.replace(/(-|--)+/g, "");
             const arr = item.split("=");
             flagsA[arr[0]] = arr[1] ? arr[1] : true;
@@ -28,81 +28,96 @@ const [args, flags] = (() => {
     return [argsA, flagsA];
 })();
 
-if (flags["d"] || flags["debug"]) console.log("Args:", args, "\n", "Flags:", flags);
+if (flags["d"] || flags["debug"]) console.log("Argv", argv, "Args:", args, "\n", "Flags:", flags);
 
 /**
  * Represents the main entry point for the CLI tool.
  */
-let [, projectType, projectDir, projectName, projectGitRepo, copyEslint] = args;
+let [, , projectType, projectDir, projectName, projectGitRepo, copyEslint] = args;
 
 // TODO: Add help message.
 if (flags["h"] || flags["help"]) {
-    console.log("Coming soon! For now, see https://github.com/xShadowBlade/template-defaults");
+    console.log("Help is coming soon. For now, see https://github.com/xShadowBlade/template-defaults");
     cancel("", 0);
 }
 
-// if (flags["y"] || flags["yes"]) {
-//      
-// }
-
-console.log("This CLI tool will create a new project in the specified directory.");
-console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
-console.log("Press ^C at any time to cancel. \n");
-
-function cancel (message = "Cancelled.", code = 0) {
-    console.log(message);
-    process.exit(code);
+if (!(flags["y"] || flags["yes"])) {
+    walkThrough();
+} else {
+    projectType = projectType ?? "ts";
+    projectDir = projectDir ?? ".";
+    projectName = projectName ?? "my-project";
+    projectGitRepo = projectGitRepo ?? "https://github.com/xShadowBlade/template-defaults";
 }
 
-// If the user did not specify a project type, warn them and set a default type.
-if (!projectType) {
-    projectType = prompt("Project type (valid types: 'ts', 'react-ts', 'html-ts'): ");
-    if (projectType === null) cancel();
-    projectType = projectType.toLowerCase().replace(/[^a-z-]/g, "");
+function walkThrough () {
+    console.log("This CLI tool will create a new project in the specified directory.");
+    console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
+    console.log("Press ^C at any time to cancel. \n");
+
+    function cancel (message = "Cancelled.", code = 0) {
+        console.log(message);
+        process.exit(code);
+    }
+
+    // If the user did not specify a project type, warn them and set a default type.
     if (!projectType) {
-        console.log("No project type specified. Using default type 'ts'.");
-        projectType = "ts";
+        projectType = prompt("Project type (valid types: 'ts', 'react-ts', 'html-ts'): ");
+        if (projectType === null) cancel();
+        projectType = projectType.toLowerCase().replace(/[^a-z-]/g, "");
+        if (!projectType) {
+            console.log("No project type specified. Using default type 'ts'.");
+            projectType = "ts";
+        }
+        console.log("");
+    } else {
+        console.log("Project type: ", projectType);
     }
-    console.log("");
-}
 
-// If the user did not specify a project directory, warn them and set a default directory.
-if (!projectDir) {
-    projectDir = prompt("Project directory: ");
-    if (projectDir === null) cancel();
+    // If the user did not specify a project directory, warn them and set a default directory.
     if (!projectDir) {
-        console.log("No project directory specified. Using the current working directory.");
-        projectDir = ".";
+        projectDir = prompt("Project directory: ");
+        if (projectDir === null) cancel();
+        if (!projectDir) {
+            console.log("No project directory specified. Using the current working directory.");
+            projectDir = ".";
+        }
+        console.log("");
+    } else {
+        console.log("Project directory: ", projectDir);
     }
-    console.log("");
-}
 
-// If the user did not specify a project name, warn them and set a default name.
-if (!projectName) {
-    projectName = prompt("Project name: ");
-    if (projectName === null) cancel();
+    // If the user did not specify a project name, warn them and set a default name.
     if (!projectName) {
-        console.log("No project name specified. Using default name 'my-project'.");
-        projectName = "my-project";
+        projectName = prompt("Project name: ");
+        if (projectName === null) cancel();
+        if (!projectName) {
+            console.log("No project name specified. Using default name 'my-project'.");
+            projectName = "my-project";
+        }
+        console.log("");
+    } else {
+        console.log("Project name: ", projectName);
     }
-    console.log("");
-}
 
-// If the user did not specify a project git repo, warn them and set a default repo.
-if (!projectGitRepo) {
-    projectGitRepo = prompt("Project git repo: ");
-    if (projectGitRepo === null) cancel();
+    // If the user did not specify a project git repo, warn them and set a default repo.
     if (!projectGitRepo) {
-        console.log("No project git repo specified. Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.");
-        projectGitRepo = "https://github.com/xShadowBlade/template-defaults";
+        projectGitRepo = prompt("Project git repo: ");
+        if (projectGitRepo === null) cancel();
+        if (!projectGitRepo) {
+            console.log("No project git repo specified. Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.");
+            projectGitRepo = "https://github.com/xShadowBlade/template-defaults";
+        }
+        console.log("");
+    } else {
+        console.log("Project git repo: ", projectGitRepo);
     }
-    console.log("");
-}
 
-// Ask for confirmation.
-const confirmation = (prompt("Confirm (y/n) [y]: ") ?? "").toLowerCase();
-if (!["", "y", "yes"].includes(confirmation)) {
-    cancel();
+    // Ask for confirmation.
+    const confirmation = (prompt("Confirm (y/n) [y]: ") ?? "").toLowerCase();
+    if (!["", "y", "yes"].includes(confirmation)) {
+        cancel();
+    }
 }
 
 const projectDirPath = path.join(process.cwd(), projectDir);

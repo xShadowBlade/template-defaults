@@ -2,9 +2,10 @@
   "name": "template-defaults",
   "version": "0.1.0",
   "description": "Template scripts to start my projects",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild bin/bin.js --bundle --platform=node --outfile=dist/index.js --minify"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,8 @@
     "url": "https://github.com/xShadowBlade/template-defaults/issues"
   },
   "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
-  "dependencies": {
+  "devDependencies": {
+    "esbuild": "^0.20.1",
     "fs-extra": "^11.2.0",
     "prompt-sync": "^4.2.0"
   }
