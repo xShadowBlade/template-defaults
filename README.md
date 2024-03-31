@@ -6,36 +6,57 @@ A CLI tool to quickly start projects, using my own configuration :)
 
 **Requirements**:
 
-- nodejs
+- Nodejs
 - npm (yarn or pnpm not supported yet)
-- git
 
 ### Step 1
 
-`cd` into your project directory, then clone this repo using `git`
+`cd` into your project directory, then download a [release file](https://github.com/xShadowBlade/template-defaults/blob/main/dist/index.js) using `curl` or `wget`:
 
 ```bash
-git clone https://github.com/xShadowBlade/template-defaults
+wget https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js
+```
+
+or:
+
+```bash
+curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js
 ```
 
 ### Step 2
 
-Run the install script and follow the prompted instructions
+Run the install script and follow the prompted instructions:
 
 ```bash
-node template-defaults
+node ./template-defaults.js
 ```
 
-... or for a quick start (replace `"html-ts"` with your project type)
+or for a quick start (replace `"html-ts"` with your project type):
 
 ```bash
-node template-defaults "html-ts" -y
+node ./template-defaults.js "html-ts" -y
 ```
 
 ### Step 3 (optional)
 
-Delete the template-defaults directory using file explorer or (if using unix):
+Delete the template-defaults directory using file explorer or using a command:
 
 ```bash
-rm -rf template-defaults
+rm ./template-defaults.js
+```
+
+### Combined
+
+Here is a combined single command that you can use:
+
+#### Windows/cmd
+
+```bash
+curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js ; node ./template-defaults.js ; del ./template-defaults.js
+```
+
+#### Linux/bash
+
+```bash
+curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js && node ./template-defaults.js && rm ./template-defaults.js
 ```

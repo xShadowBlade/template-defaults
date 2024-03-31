@@ -1,21 +1,29 @@
 #!/usr/bin/env node
 
 /**
- * @fileovervew CLI tool for creating React projects with TypeScript.
+ * @file CLI tool for creating React projects with TypeScript.
  */
+import process from "process";
+import path from "path";
+import fs from "fs-extra";
+// const prompt = require("prompt-sync")();
+import promptGen from "prompt-sync";
+import { argv } from "process";
 
-const path = require("path");
-const fs = require("fs-extra");
-const prompt = require("prompt-sync")();
-const { argv } = require("process");
+const prompt = promptGen();
 
 /**
  * Extracts command-line arguments and flags from the process arguments.
- * @returns {[string[], {[flag: string]: string | boolean}]} Tuple containing arguments and flags.
  */
 const [args, flags] = (() => {
-    const argsA = [];
-    const flagsA = {};
+    /**
+     * The arguments array.
+     */
+    const argsA: string[] = [];
+    /**
+     * The flags object.
+     */
+    const flagsA: Record<string, string | boolean> = {};
     argv.forEach((item) => {
         if (item.match(/^(-|--)/)) { // If it is a flag
             item = item.replace(/(-|--)+/g, "");
@@ -35,6 +43,16 @@ if (flags["d"] || flags["debug"]) console.log("Argv", argv, "Args:", args, "\n",
  */
 let [, , projectType, projectDir, projectName, projectGitRepo, copyEslint] = args;
 
+/**
+ * Cancels the process with a message and code.
+ * @param message - The message to log.
+ * @param code - The exit code.
+ */
+function cancel (message: string = "Cancelled.", code: number = 0) {
+    console.log(message);
+    process.exit(code);
+}
+
 // TODO: Add help message.
 if (flags["h"] || flags["help"]) {
     console.log("Help is coming soon. For now, see https://github.com/xShadowBlade/template-defaults");
@@ -50,68 +68,84 @@ if (!(flags["y"] || flags["yes"])) {
     projectGitRepo = projectGitRepo ?? "https://github.com/xShadowBlade/template-defaults";
 }
 
+/**
+ * Walks the user through the process of creating a new project.
+ */
 function walkThrough () {
     console.log("This CLI tool will create a new project in the specified directory.");
     console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
     console.log("Press ^C at any time to cancel. \n");
 
-    function cancel (message = "Cancelled.", code = 0) {
-        console.log(message);
-        process.exit(code);
+    interface PromptOptions {
+        initPrompt: string;
+        defaultMessage?: string;
+        defaultValue: string;
+        cancelMessage?: string;
+        cancelCode?: number;
     }
 
-    // If the user did not specify a project type, warn them and set a default type.
-    if (!projectType) {
-        projectType = prompt("Project type (valid types: 'ts', 'react-ts', 'html-ts'): ");
-        if (projectType === null) cancel();
-        projectType = projectType.toLowerCase().replace(/[^a-z-]/g, "");
-        if (!projectType) {
-            console.log("No project type specified. Using default type 'ts'.");
-            projectType = "ts";
+    /**
+     * Function to set the default prompt for a value.
+     * @param options - The options for the prompt.
+     * @returns The prompted value.
+     */
+    function setDefaultPrompt (options: PromptOptions) {
+        const { initPrompt, defaultMessage, defaultValue, cancelMessage, cancelCode } = options;
+
+        let prompted = prompt(initPrompt);
+        if (prompted === null) cancel(cancelMessage, cancelCode);
+        prompted = prompted.toLowerCase().trim().replace(/[^a-z-]/g, "");
+        if (!prompted) {
+            console.log(defaultMessage ?? `Using default value '${defaultValue}'.`);
+            prompted = defaultValue;
         }
-        console.log("");
-    } else {
+
+        return prompted;
+    }
+
+    projectType = projectType ? (() => {
         console.log("Project type: ", projectType);
-    }
+        return projectType;
+    })() : setDefaultPrompt({
+        initPrompt: "Project type (valid types: 'ts', 'react-ts', 'html-ts'): ",
+        defaultMessage: "Using default type 'ts'.",
+        defaultValue: "ts",
+        // cancelMessage: "No project type specified. Exiting.",
+        // cancelCode: 1
+    });
 
-    // If the user did not specify a project directory, warn them and set a default directory.
-    if (!projectDir) {
-        projectDir = prompt("Project directory: ");
-        if (projectDir === null) cancel();
-        if (!projectDir) {
-            console.log("No project directory specified. Using the current working directory.");
-            projectDir = ".";
-        }
-        console.log("");
-    } else {
+    projectDir = projectDir ? (() => {
         console.log("Project directory: ", projectDir);
-    }
+        return projectDir;
+    })() : setDefaultPrompt({
+        initPrompt: "Project directory: ",
+        defaultMessage: "Using the current working directory.",
+        defaultValue: ".",
+        // cancelMessage: "No project directory specified. Exiting.",
+        // cancelCode: 1
+    });
 
-    // If the user did not specify a project name, warn them and set a default name.
-    if (!projectName) {
-        projectName = prompt("Project name: ");
-        if (projectName === null) cancel();
-        if (!projectName) {
-            console.log("No project name specified. Using default name 'my-project'.");
-            projectName = "my-project";
-        }
-        console.log("");
-    } else {
+    projectName = projectName ? (() => {
         console.log("Project name: ", projectName);
-    }
+        return projectName;
+    })() : setDefaultPrompt({
+        initPrompt: "Project name: ",
+        defaultMessage: "Using default name 'my-project'.",
+        defaultValue: "my-project",
+        // cancelMessage: "No project name specified. Exiting.",
+        // cancelCode: 1
+    });
 
-    // If the user did not specify a project git repo, warn them and set a default repo.
-    if (!projectGitRepo) {
-        projectGitRepo = prompt("Project git repo: ");
-        if (projectGitRepo === null) cancel();
-        if (!projectGitRepo) {
-            console.log("No project git repo specified. Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.");
-            projectGitRepo = "https://github.com/xShadowBlade/template-defaults";
-        }
-        console.log("");
-    } else {
+    projectGitRepo = projectGitRepo ? (() => {
         console.log("Project git repo: ", projectGitRepo);
-    }
+        return projectGitRepo;
+    })() : setDefaultPrompt({
+        initPrompt: "Project git repo: ",
+        defaultMessage: "Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.",
+        defaultValue: "https://github.com/xShadowBlade/template-defaults",
+        // cancelMessage: "No project git repo specified. Exiting.",
+        // cancelCode: 1
+    });
 
     // Ask for confirmation.
     const confirmation = (prompt("Confirm (y/n) [y]: ") ?? "").toLowerCase();
@@ -130,9 +164,9 @@ fs.copySync(commonDir, projectDirPath);
 
 const projectTypeTemplateDir = (() => {
     switch (projectType) {
-        case "react-ts": return path.join(__dirname, "..", "templates", "react-ts");
-        case "html-ts": return path.join(__dirname, "..", "templates", "html-ts");
-        case "ts": default: return path.join(__dirname, "..", "templates", "ts");
+    case "react-ts": return path.join(__dirname, "..", "templates", "react-ts");
+    case "html-ts": return path.join(__dirname, "..", "templates", "html-ts");
+    case "ts": default: return path.join(__dirname, "..", "templates", "ts");
     }
 })();
 
@@ -147,11 +181,11 @@ if (projectTypeTemplateDir) {
 
 /**
  * Replaces all instances of a string or regex in a file.
- * @param {string} filePath - The path to the file.
- * @param {string|RegExp} searchValue - The value to search for.
- * @param {string} replaceValue - The value to replace with.
+ * @param filePath - The path to the file.
+ * @param searchValue - The value to search for.
+ * @param replaceValue - The value to replace with.
  */
-function replaceInFile (filePath, searchValue, replaceValue) {
+function replaceInFile (filePath: string, searchValue: string | RegExp, replaceValue: string) {
     const file = fs.readFileSync(filePath, "utf-8");
     const newFile = file.replace(searchValue, replaceValue);
     fs.writeFileSync(filePath, newFile, "utf-8");
