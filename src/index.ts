@@ -3,12 +3,10 @@
 /**
  * @file CLI tool for creating React projects with TypeScript.
  */
-import process from "process";
-import path from "path";
+import process, { argv } from "node:process";
+import path from "node:path";
 import fs from "fs-extra";
-// const prompt = require("prompt-sync")();
 import promptGen from "prompt-sync";
-import { argv } from "process";
 
 const prompt = promptGen();
 
@@ -41,7 +39,7 @@ if (flags["d"] || flags["debug"]) console.log("Argv", argv, "Args:", args, "\n",
 /**
  * Represents the main entry point for the CLI tool.
  */
-let [, , projectType, projectDir, projectName, projectGitRepo, copyEslint] = args;
+let [, , projectType, projectDir, projectName, projectGitRepo /* copyEslint */] = args;
 
 /**
  * Cancels the process with a message and code.
@@ -158,15 +156,15 @@ const projectDirPath = path.join(process.cwd(), projectDir);
 // console.log("Project dir: ", projectDirPath);
 
 // Copy all files from ../common/** to the project directory.
-const commonDir = path.join(__dirname, "..", "common");
+const commonDir = path.join(__dirname, ".", "common");
 // console.log("Common dir: ", commonDir);
 fs.copySync(commonDir, projectDirPath);
 
 const projectTypeTemplateDir = (() => {
     switch (projectType) {
-    case "react-ts": return path.join(__dirname, "..", "templates", "react-ts");
-    case "html-ts": return path.join(__dirname, "..", "templates", "html-ts");
-    case "ts": default: return path.join(__dirname, "..", "templates", "ts");
+    case "react-ts": return path.join(__dirname, ".", "templates", "react-ts");
+    case "html-ts": return path.join(__dirname, ".", "templates", "html-ts");
+    case "ts": default: return path.join(__dirname, ".", "templates", "ts");
     }
 })();
 
