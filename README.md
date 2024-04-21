@@ -8,19 +8,14 @@ A CLI tool to quickly start projects, using my own configuration :)
 
 - Nodejs
 - npm (yarn or pnpm not supported yet)
+- git
 
 ### Step 1
 
-`cd` into your project directory, then download a [release file](https://github.com/xShadowBlade/template-defaults/blob/main/dist/index.js) using `curl` or `wget`:
+`cd` into your project directory, then clone this repo using git:
 
 ```bash
-wget https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js
-```
-
-or:
-
-```bash
-curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js
+git clone https://github.com/xShadowBlade/template-defaults --depth 1
 ```
 
 ### Step 2
@@ -28,7 +23,7 @@ curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/
 Run the install script and follow the prompted instructions:
 
 ```bash
-node ./template-defaults.js
+node ./template-defaults
 ```
 
 or for a quick start (replace `"html-ts"` with your project type):
@@ -42,7 +37,7 @@ node ./template-defaults.js "html-ts" -y
 Delete the template-defaults directory using file explorer or using a command:
 
 ```bash
-rm ./template-defaults.js
+rm -rf ./template-defaults
 ```
 
 ### Combined
@@ -52,11 +47,11 @@ Here is a combined single command that you can use:
 #### Windows/cmd
 
 ```bash
-curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js ; node ./template-defaults.js ; del ./template-defaults.js
+git clone https://github.com/xShadowBlade/template-defaults --depth 1; node ./template-defaults; del /f ./template-defaults
 ```
 
 #### Linux/bash
 
 ```bash
-curl https://raw.githubusercontent.com/xShadowBlade/template-defaults/main/dist/index.js -o template-defaults.js && node ./template-defaults.js && rm ./template-defaults.js
+git clone https://github.com/xShadowBlade/template-defaults --depth 1 && node ./template-defaults && rm -rf ./template-defaults
 ```

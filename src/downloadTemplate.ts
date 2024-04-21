@@ -1,5 +1,6 @@
 /**
  * @file Downloads the template files from a github release (zip file) and extracts them to the project directory.
+ * @deprecated Clone the repo using git instead of downloading the zip file.
  */
 import path from "node:path";
 import fs from "fs-extra";
