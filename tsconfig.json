@@ -4,7 +4,7 @@
 		"target": "ES5",
 		"module": "NodeNext",
 		"strict": true,
-		"lib": ["ESNext", "dom"],
+		"lib": ["ESNext"],
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
