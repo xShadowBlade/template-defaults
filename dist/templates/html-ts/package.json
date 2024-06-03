@@ -41,7 +41,7 @@
     "css-minimizer-webpack-plugin": "^7.0.0",
     "esbuild": "^0.21.3",
     "esbuild-loader": "^4.0.2",
-    "eslint": "^8.52.0",
+    "eslint": "^9.4.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jsdoc": "^48.2.3",
     "html-replace-webpack-plugin": "^2.6.0",
