@@ -19,7 +19,7 @@
   "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.14.2",
     "@types/prompt-sync": "^4.2.3",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
