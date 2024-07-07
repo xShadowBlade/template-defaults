@@ -2,8 +2,6 @@
     "extends": [
         "eslint:recommended",
         "prettier",
-        "plugin:react/recommended",
-        "react-app",
         "plugin:jsdoc/recommended-typescript",
         "plugin:@typescript-eslint/strict-type-checked",
         "plugin:@typescript-eslint/stylistic-type-checked"
@@ -27,7 +25,7 @@
         "curly": ["warn", "multi-line"],
         "dot-location": ["warn", "property"],
         "handle-callback-err": "off",
-        "indent": ["warn", 4],
+        "indent": ["warn", 4, { "SwitchCase": 1 }],
         "keyword-spacing": "warn",
         "max-nested-callbacks": ["warn", { "max": 4 }],
         "max-statements-per-line": ["warn", { "max": 2 }],
@@ -59,6 +57,8 @@
         "@typescript-eslint/member-delimiter-style": "warn",
         "@typescript-eslint/explicit-function-return-type": "warn",
         "@typescript-eslint/restrict-template-expressions": ["warn", { "allowNumber": true, "allowBoolean": true }],
+        "@typescript-eslint/consistent-type-exports": "warn",
+        "@typescript-eslint/consistent-type-imports": "warn",
 
         "jsdoc/require-param-type": "off",
         "jsdoc/require-returns-type": "off",
