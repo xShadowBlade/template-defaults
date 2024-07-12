@@ -15,11 +15,13 @@ type PromptOptions = Readonly<{
     cancelCode?: number;
 }>;
 
+type ProjectType = "ts" | "react-ts" | "html-ts";
+
 const promptOptions = {
     projectType: {
         initPrompt: "Project type (valid types: 'ts', 'react-ts', 'html-ts'): ",
         defaultMessage: "Using default type 'ts'.",
-        defaultValue: "ts",
+        defaultValue: "ts" as ProjectType,
     },
     projectDir: {
         initPrompt: "Project directory: ",
@@ -48,10 +50,12 @@ const promptOptions = {
     },
 } satisfies Record<string, PromptOptions>;
 
-const promptDefaultOptions: Record<keyof typeof promptOptions, string> = ((): typeof promptDefaultOptions => {
+const promptDefaultOptions: {
+    [K in keyof typeof promptOptions]: (typeof promptOptions)[K]["defaultValue"];
+} = ((): typeof promptDefaultOptions => {
     const out: typeof promptDefaultOptions = {} as typeof promptDefaultOptions;
     for (const key in promptOptions) {
-        out[key as keyof typeof promptOptions] = promptOptions[key as keyof typeof promptOptions].defaultValue;
+        out[key as keyof typeof promptOptions] = promptOptions[key as keyof typeof promptOptions].defaultValue as ProjectType;
     }
     return out;
 })();
@@ -79,12 +83,12 @@ function setDefaultPrompt (promptOption: PromptOptions): string {
  * Walks the user through the process of creating a new project.
  * @returns The options for the new project.
  */
-function walkThrough (): Record<keyof typeof promptOptions, string> {
+function walkThrough (): typeof promptDefaultOptions {
     console.log("This CLI tool will create a new project in the specified directory.");
     console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
     console.log("Press ^C at any time to cancel. \n");
 
-    const out: Record<keyof typeof promptOptions, string> = ((): typeof out => {
+    const out: ReturnType<typeof walkThrough> = ((): typeof out => {
         const outTemp: typeof out = {} as typeof out;
         for (const key in promptOptions) {
             outTemp[key as keyof typeof promptOptions] = setDefaultPrompt(promptOptions[key as keyof typeof promptOptions]);

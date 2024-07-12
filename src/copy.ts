@@ -14,7 +14,6 @@ import type { promptDefaultOptions } from "./options";
  * @param projectOptions - The options for copying the files.
  */
 function copyFiles (projectOptions: typeof promptDefaultOptions): void {
-
     const { projectType, projectDir, projectName, projectGitRepo, configureEslint, installDep } = projectOptions;
 
     const projectDirPath = path.join(process.cwd(), projectDir);
@@ -31,6 +30,7 @@ function copyFiles (projectOptions: typeof promptDefaultOptions): void {
     }
 
     const packageJsonPath = path.join(projectDirPath, "package.json");
+    const packageLockJsonPath = path.join(projectDirPath, "package-lock.json");
 
     if (!configureEslint || !["y", "yes", "true"].includes(configureEslint)) {
         fs.removeSync(path.join(projectDirPath, ".eslintrc.json"));
@@ -57,6 +57,9 @@ function copyFiles (projectOptions: typeof promptDefaultOptions): void {
     replaceInFile(packageJsonPath, /"url": ".*"/, `"url": "${projectGitRepo}"`);
     replaceInFile(packageJsonPath, /"url": ".*\/issues"/, `"url": "${projectGitRepo}/issues"`);
     replaceInFile(packageJsonPath, /"homepage": ".*"/, `"homepage": "${projectGitRepo}#readme"`);
+
+    // Replace package name in package-lock.json
+    replaceInFile(packageLockJsonPath, `"name": "${projectType}"`, `"name": "${projectName}"`);
 
     if (installDep && ["y", "yes", "true"].includes(installDep)) {
         console.log("\nInstalling dependencies...");
