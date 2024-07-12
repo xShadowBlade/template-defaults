@@ -1,6 +1,6 @@
 {
   "name": "template-defaults",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Template scripts to start my projects",
   "main": "dist/index.js",
   "bin": {
