@@ -49,7 +49,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-jsdoc": "^48.2.3",
-    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react": "^7.34.4",
     "html-replace-webpack-plugin": "^2.6.0",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.8.0",
