@@ -43,7 +43,7 @@
     "esbuild-loader": "^4.2.2",
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-jsdoc": "^50.0.1",
+    "eslint-plugin-jsdoc": "^50.2.2",
     "html-replace-webpack-plugin": "^2.6.0",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.9.1",
