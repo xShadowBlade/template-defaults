@@ -20,7 +20,8 @@ const [args, flags] = ((): [string[], Record<string, string | boolean>] => {
     const flagsA: Record<string, string | boolean> = {};
 
     argv.forEach((item) => {
-        if (item.match(/^(-|--)/)) { // If it is a flag
+        if (/^(-|--)/.exec(item)) {
+            // If it is a flag
             item = item.replace(/(-|--)+/g, "");
             const arr = item.split("=");
             flagsA[arr[0].toLowerCase()] = arr[1] ? arr[1] : true;
@@ -31,14 +32,15 @@ const [args, flags] = ((): [string[], Record<string, string | boolean>] => {
     return [argsA, flagsA];
 })();
 
-if (flags.d || flags.debug) console.log("Argv", argv, "Args:", args, "\n", "Flags:", flags);
+if (flags.d || flags.debug)
+    console.log("Argv", argv, "Args:", args, "\n", "Flags:", flags);
 
 /**
  * Cancels the process with a message and code.
  * @param message - The message to log.
  * @param code - The exit code.
  */
-function cancel (message = "Cancelled.", code = 0): void {
+function cancel(message = "Cancelled.", code = 0): void {
     console.log(message);
     process.exit(code);
 }
@@ -49,10 +51,23 @@ function cancel (message = "Cancelled.", code = 0): void {
  * @param searchValue - The value to search for.
  * @param replaceValue - The value to replace with.
  */
-function replaceInFile (filePath: string, searchValue: string | RegExp, replaceValue: string): void {
+function replaceInFile(
+    filePath: string,
+    searchValue: string | RegExp,
+    replaceValue: string,
+): void {
     const file = fs.readFileSync(filePath, "utf-8");
     const newFile = file.replace(searchValue, replaceValue);
     fs.writeFileSync(filePath, newFile, "utf-8");
 }
 
-export { prompt, commonDir, distDir, projectTypes, args, flags, cancel, replaceInFile };
+export {
+    prompt,
+    commonDir,
+    distDir,
+    projectTypes,
+    args,
+    flags,
+    cancel,
+    replaceInFile,
+};

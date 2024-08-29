@@ -20,10 +20,13 @@ if (flags.h || flags.help) {
     cancel("", 0);
 }
 
-const promptOptions = Object.assign(promptDefaultOptions, ((): typeof promptDefaultOptions => {
-    if (flags.y || flags.yes) return {} as typeof promptDefaultOptions;
-    return walkThrough();
-})());
+const promptOptions = Object.assign(
+    promptDefaultOptions,
+    ((): typeof promptDefaultOptions => {
+        if (flags.y || flags.yes) return {} as typeof promptDefaultOptions;
+        return walkThrough();
+    })(),
+);
 
 copyFiles(promptOptions);
 

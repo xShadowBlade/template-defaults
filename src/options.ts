@@ -35,7 +35,8 @@ const promptOptions = {
     },
     projectGitRepo: {
         initPrompt: "Project git repo: ",
-        defaultMessage: "Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.",
+        defaultMessage:
+            "Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.",
         defaultValue: "https://github.com/xShadowBlade/template-defaults",
     },
     configureEslint: {
@@ -55,7 +56,9 @@ const promptDefaultOptions: {
 } = ((): typeof promptDefaultOptions => {
     const out: typeof promptDefaultOptions = {} as typeof promptDefaultOptions;
     for (const key in promptOptions) {
-        out[key as keyof typeof promptOptions] = promptOptions[key as keyof typeof promptOptions].defaultValue as ProjectType;
+        out[key as keyof typeof promptOptions] = promptOptions[
+            key as keyof typeof promptOptions
+        ].defaultValue as ProjectType;
     }
     return out;
 })();
@@ -65,12 +68,21 @@ const promptDefaultOptions: {
  * @param promptOption - The options for the prompt.
  * @returns The prompted value.
  */
-function setDefaultPrompt (promptOption: PromptOptions): string {
-    const { initPrompt, defaultMessage, defaultValue, cancelMessage, cancelCode } = promptOption;
+function setDefaultPrompt(promptOption: PromptOptions): string {
+    const {
+        initPrompt,
+        defaultMessage,
+        defaultValue,
+        cancelMessage,
+        cancelCode,
+    } = promptOption;
 
     let prompted = prompt(initPrompt);
-    if (prompted as string | null === null) cancel(cancelMessage, cancelCode);
-    prompted = prompted.toLowerCase().trim().replace(/[^a-z-]/g, "");
+    if ((prompted as string | null) === null) cancel(cancelMessage, cancelCode);
+    prompted = prompted
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z-]/g, "");
     if (!prompted) {
         console.log(defaultMessage ?? `Using default value '${defaultValue}'.`);
         prompted = defaultValue;
@@ -83,21 +95,27 @@ function setDefaultPrompt (promptOption: PromptOptions): string {
  * Walks the user through the process of creating a new project.
  * @returns The options for the new project.
  */
-function walkThrough (): typeof promptDefaultOptions {
-    console.log("This CLI tool will create a new project in the specified directory.");
-    console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
+function walkThrough(): typeof promptDefaultOptions {
+    console.log(
+        "This CLI tool will create a new project in the specified directory.",
+    );
+    console.log(
+        "For more information, see https://github.com/xShadowBlade/template-defaults",
+    );
     console.log("Press ^C at any time to cancel. \n");
 
     const out: ReturnType<typeof walkThrough> = ((): typeof out => {
         const outTemp: typeof out = {} as typeof out;
         for (const key in promptOptions) {
-            outTemp[key as keyof typeof promptOptions] = setDefaultPrompt(promptOptions[key as keyof typeof promptOptions]);
+            outTemp[key as keyof typeof promptOptions] = setDefaultPrompt(
+                promptOptions[key as keyof typeof promptOptions],
+            );
         }
         return outTemp;
     })();
 
     // Ask for confirmation.
-    const confirmation = (prompt("Confirm (y/n) [y]: ")).toLowerCase();
+    const confirmation = prompt("Confirm (y/n) [y]: ").toLowerCase();
     if (!["", "y", "yes"].includes(confirmation)) {
         cancel();
     }

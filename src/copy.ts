@@ -13,8 +13,15 @@ import type { promptDefaultOptions } from "./options";
  * Copies the source files to the project folder, and applies the necessary transformations.
  * @param projectOptions - The options for copying the files.
  */
-function copyFiles (projectOptions: typeof promptDefaultOptions): void {
-    const { projectType, projectDir, projectName, projectGitRepo, configureEslint, installDep } = projectOptions;
+function copyFiles(projectOptions: typeof promptDefaultOptions): void {
+    const {
+        projectType,
+        projectDir,
+        projectName,
+        projectGitRepo,
+        configureEslint,
+        installDep,
+    } = projectOptions;
 
     const projectDirPath = path.join(process.cwd(), projectDir);
     // console.log("Project dir: ", projectDirPath);
@@ -47,7 +54,11 @@ function copyFiles (projectOptions: typeof promptDefaultOptions): void {
         ];
         // replaceInFile(packageJsonPath, /\n {4}"eslint": "\^8.52.0",\n {4}"eslint-config-prettier": "\^9.0.0",\n {4}"eslint-plugin-jsdoc": "\^46.9.0",\n {4}/, "");
         eslintDevDeps.forEach((dep) => {
-            replaceInFile(packageJsonPath, new RegExp(`\n {4}"${dep}": ".*",`), "");
+            replaceInFile(
+                packageJsonPath,
+                new RegExp(`\n {4}"${dep}": ".*",`),
+                "",
+            );
         });
         // Remove empty lines.
         replaceInFile(packageJsonPath, /^\s*$/gm, "");
@@ -55,11 +66,23 @@ function copyFiles (projectOptions: typeof promptDefaultOptions): void {
 
     replaceInFile(packageJsonPath, /"name": ".*"/, `"name": "${projectName}"`);
     replaceInFile(packageJsonPath, /"url": ".*"/, `"url": "${projectGitRepo}"`);
-    replaceInFile(packageJsonPath, /"url": ".*\/issues"/, `"url": "${projectGitRepo}/issues"`);
-    replaceInFile(packageJsonPath, /"homepage": ".*"/, `"homepage": "${projectGitRepo}#readme"`);
+    replaceInFile(
+        packageJsonPath,
+        /"url": ".*\/issues"/,
+        `"url": "${projectGitRepo}/issues"`,
+    );
+    replaceInFile(
+        packageJsonPath,
+        /"homepage": ".*"/,
+        `"homepage": "${projectGitRepo}#readme"`,
+    );
 
     // Replace package name in package-lock.json
-    replaceInFile(packageLockJsonPath, `"name": "${projectType}"`, `"name": "${projectName}"`);
+    replaceInFile(
+        packageLockJsonPath,
+        `"name": "${projectType}"`,
+        `"name": "${projectName}"`,
+    );
 
     if (installDep && ["y", "yes", "true"].includes(installDep)) {
         console.log("\nInstalling dependencies...");
@@ -83,7 +106,8 @@ function copyFiles (projectOptions: typeof promptDefaultOptions): void {
             condition: ["react-ts", "html-ts"].includes(projectType),
         },
     ];
-    if (messages.some((msg) => msg.condition)) console.log("To get started, run the following commands:");
+    if (messages.some((msg) => msg.condition))
+        console.log("To get started, run the following commands:");
     messages.forEach((msg) => {
         if (msg.condition) console.log(msg.message);
     });
