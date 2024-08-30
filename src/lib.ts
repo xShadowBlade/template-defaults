@@ -10,28 +10,39 @@ const prompt = promptGen();
 
 const distDir = path.join(__filename, "..");
 const commonDir = path.join(distDir, "common");
+
+/**
+ * The types of projects that can be created.
+ */
+type ProjectType = "ts" | "react-ts" | "html-ts";
+
 const projectTypes = fs.readdirSync(path.join(distDir, "templates"));
 
 /**
  * Extracts command-line arguments and flags from the process arguments.
  */
 const [args, flags] = ((): [string[], Record<string, string | boolean>] => {
-    const argsA: string[] = [];
-    const flagsA: Record<string, string | boolean> = {};
+    const argsArray: string[] = [];
+    const flagsRecord: Record<string, string | boolean> = {};
 
+    // Argv is an array of strings, split by spaces. Iterate through each item, and check if it is a flag or an argument.
     argv.forEach((item) => {
         if (/^(-|--)/.exec(item)) {
-            // If it is a flag
+            // If it is a flag (starts with - or --), remove any dashes, and split by =.
             item = item.replace(/(-|--)+/g, "");
-            const arr = item.split("=");
-            flagsA[arr[0].toLowerCase()] = arr[1] ? arr[1] : true;
+            const [flag, value] = item.split("=");
+
+            // If there is a value, set the flag to the value. Otherwise, set it to true.
+            flagsRecord[flag] = value || true;
         } else {
-            argsA.push(item);
+            // If it is an argument, push it to the args array.
+            argsArray.push(item);
         }
     });
-    return [argsA, flagsA];
+    return [argsArray, flagsRecord];
 })();
 
+// If the debug flag is set, log the arguments and flags.
 if (flags.d || flags.debug)
     console.log("Argv", argv, "Args:", args, "\n", "Flags:", flags);
 
@@ -71,3 +82,5 @@ export {
     cancel,
     replaceInFile,
 };
+
+export type { ProjectType };
