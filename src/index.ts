@@ -5,20 +5,13 @@
  */
 import process from "node:process";
 
-import { cancel, flags } from "./lib";
+// import { cancel } from "./lib";
+import { flags, displayHelp } from "./argv";
 import { walkThrough, promptDefaultOptions } from "./options";
 import { copyFiles } from "./copy";
 
 // Display help message if requested.
-if (flags.h || flags.help) {
-    console.log(`Usage: template-defaults [projectType] [projectDir] [projectName] [projectGitRepo] [configureEslint] [installDep]
-
-    Options:
-        -d, --debug: Debug mode.
-        -y, --yes:  Skip prompts.
-        -h, --help: Show help message.`);
-    cancel("", 0);
-}
+if (flags.h || flags.help) displayHelp();
 
 const promptOptions = Object.assign(
     promptDefaultOptions,
