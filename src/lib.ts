@@ -48,6 +48,12 @@ function replaceInFile(
     searchValue: string | RegExp,
     replaceValue: string,
 ): void {
+    // Check if the file exists.
+    if (!fs.existsSync(filePath)) {
+        // Silently return if the file does not exist (sometimes package-lock.json does not exist).
+        return;
+    }
+
     // Read the contents of the file
     const file = fs.readFileSync(filePath, "utf-8");
 

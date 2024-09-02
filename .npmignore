@@ -2,3 +2,9 @@
 /*
 # Allow dist directories
 !/dist
+
+# Ignore /dist/**/*/node_modules
+**/node_modules/*
+
+# Ignore /dist/**/*/package-lock.json
+**/package-lock.json
