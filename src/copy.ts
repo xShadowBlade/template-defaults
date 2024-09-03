@@ -59,14 +59,14 @@ function copyFiles(projectOptions: PromptOptionValues): void {
     // Remove the ESLint config if not configuring ESLint.
     if (!configureEslint || !["y", "yes", "true"].includes(configureEslint)) {
         // Remove the .eslintrc.json and .prettierrc.json files.
-        fs.removeSync(path.join(projectDirPath, ".eslintrc.json"));
+        fs.removeSync(path.join(projectDirPath, "eslint.config.mjs"));
         fs.removeSync(path.join(projectDirPath, ".prettierrc.json"));
 
         /**
          * A list of ESLint dev dependencies to remove.
          */
         const eslintDevDeps = [
-            "@eslint/eslint",
+            "@eslint/js",
             "@types/eslint__js",
             "eslint",
             "eslint-plugin-jsdoc",
