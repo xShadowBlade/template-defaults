@@ -1,57 +1,38 @@
-# template-defaults
+# @xShadowBlade/create
 
 A CLI tool to quickly start projects, using my own configuration :)
 
-## Quick Start
-
-**Requirements**:
-
-- Nodejs
-- npm (yarn or pnpm not supported yet)
-- git
-
-### Step 1
-
-`cd` into your project directory, then clone this repo using git:
+## Installation
 
 ```bash
-git clone https://github.com/xShadowBlade/template-defaults --depth 1
+npm init @xshadowblade
 ```
 
-### Step 2
-
-Run the install script and follow the prompted instructions:
+or
 
 ```bash
-node ./template-defaults
+npx @xshadowblade/create
 ```
 
-or for a quick start (replace `"html-ts"` with your project type):
+A prompt will appear, asking for the project type and the project name, and other options.
 
-```bash
-node ./template-defaults.js "html-ts" -y
-```
+Usage: template-defaults [projectType] [projectDir] [projectName] [projectGitRepo] [configureEslint] [installDep]
 
-### Step 3 (optional)
+Options:
+-   -d, --debug: Debug mode.
+-   -y, --yes:  Skip prompts.
+-   -h, --help: Show help message.
 
-Delete the template-defaults directory using file explorer or using a command:
+## Features
 
-```bash
-rm -rf ./template-defaults
-```
+- TypeScript
+- ESLint
+  - Prettier
+  - JSDoc plugin
+- Esbuild
 
-### Combined
+## Supported Project Types
 
-Here is a combined single command that you can use:
-
-#### Windows/cmd
-
-```bash
-git clone https://github.com/xShadowBlade/template-defaults --depth 1; node ./template-defaults; del /f ./template-defaults
-```
-
-#### Linux/bash
-
-```bash
-git clone https://github.com/xShadowBlade/template-defaults --depth 1 && node ./template-defaults && rm -rf ./template-defaults
-```
+- `"ts"`: TypeScript project
+- `"html-ts"`: HTML and TypeScript project, using webpack
+- `"react-ts"`: React and TypeScript project, using webpack
