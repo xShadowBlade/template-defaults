@@ -66,15 +66,13 @@ function copyFiles(projectOptions: PromptOptionValues): void {
          * A list of ESLint dev dependencies to remove.
          */
         const eslintDevDeps = [
+            "@eslint/eslint",
+            "@types/eslint__js",
             "eslint",
-            "eslint-config-prettier",
             "eslint-plugin-jsdoc",
             "eslint-plugin-prettier",
-            "@typescript-eslint/eslint-plugin",
-            "@typescript-eslint/parser",
             "prettier",
-            "prettier-eslint",
-            "eslint-config-react-app",
+            "typescript-eslint",
             "eslint-plugin-react",
         ];
 

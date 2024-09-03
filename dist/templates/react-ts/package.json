@@ -2,22 +2,22 @@
   "name": "react-ts",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "start": "webpack-dev-server --mode development --output-pathinfo",
-    "build": "webpack --mode production",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint --fix src/**/*.ts"
+  "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
+  "bugs": {
+    "url": "https://github.com/xShadowBlade/template-defaults/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xShadowBlade/template-defaults.git"
   },
-  "author": "xShadowBlade",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/xShadowBlade/template-defaults/issues"
+  "author": "xShadowBlade",
+  "scripts": {
+    "build": "webpack --mode production",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix src/**/*.ts",
+    "start": "webpack-dev-server --mode development --output-pathinfo"
   },
-  "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -35,28 +35,27 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.1",
     "@types/css-modules": "^1.0.4",
+    "@types/eslint__js": "^8.42.3",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^8.3.0",
-    "@typescript-eslint/parser": "^8.3.0",
     "copy-webpack-plugin": "^12.0.1",
     "css-loader": "^7.1.1",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "esbuild": "^0.23.1",
     "esbuild-loader": "^4.2.2",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-config-react-app": "^7.0.1",
+    "eslint": "^9.9.1",
     "eslint-plugin-jsdoc": "^50.2.2",
-    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.35.2",
     "html-replace-webpack-plugin": "^2.6.0",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.9.1",
     "prettier": "^3.3.3",
-    "prettier-eslint": "^16.1.1",
     "style-loader": "^4.0.0",
     "typescript": "^5.5.4",
+    "typescript-eslint": "^8.4.0",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"

@@ -1,0 +1,16 @@
+{
+    "eslint.workingDirectories": [
+        {
+            "directory": "./dist/templates/ts",
+            "changeProcessCWD": true
+        },
+        {
+            "directory": "./dist/templates/html-ts",
+            "changeProcessCWD": true
+        },
+        {
+            "directory": "./dist/templates/react-ts",
+            "changeProcessCWD": true
+        }
+    ]
+}

@@ -2,26 +2,26 @@
   "name": "@xshadowblade/create",
   "version": "1.0.0",
   "description": "Template scripts to start my projects",
-  "main": "dist/index.js",
-  "bin": {
-    "template-defaults": "dist/index.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild ./src/index.ts --bundle --minify --platform=node --outfile=./dist/index.js",
-    "lint": "eslint ./src --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix"
+  "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
+  "bugs": {
+    "url": "https://github.com/xShadowBlade/template-defaults/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xShadowBlade/template-defaults.git"
   },
-  "author": "xShadowBlade",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/xShadowBlade/template-defaults/issues"
+  "author": "xShadowBlade",
+  "main": "dist/index.js",
+  "bin": {
+    "template-defaults": "dist/index.js"
   },
-  "homepage": "https://github.com/xShadowBlade/template-defaults#readme",
+  "scripts": {
+    "build": "esbuild ./src/index.ts --bundle --minify --platform=node --outfile=./dist/index.js",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@types/eslint__js": "^8.42.3",
