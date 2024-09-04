@@ -111,8 +111,8 @@ const promptOptions = {
  * @example { projectType: ProjectType, projectDir: string, ... }
  */
 type PromptOptionValues = {
-    [K in keyof typeof promptOptions]: typeof promptOptions[K]["defaultValue"];
-}
+    [K in keyof typeof promptOptions]: (typeof promptOptions)[K]["defaultValue"];
+};
 
 /**
  * Extracts the default values from the prompt options.
@@ -135,7 +135,9 @@ const promptDefaultOptions: PromptOptionValues = ((): PromptOptionValues => {
  * @param promptOption - The options for the prompt.
  * @returns The prompted value.
  */
-function setDefaultPrompt<T extends PromptOptions>(promptOption: T): T["defaultValue"] {
+function setDefaultPrompt<T extends PromptOptions>(
+    promptOption: T,
+): T["defaultValue"] {
     const {
         initPrompt,
         defaultMessage,
@@ -195,10 +197,13 @@ function walkThrough(): typeof promptDefaultOptions {
     }
 
     // Ask for confirmation.
-    const confirmation = prompt("Confirm (y/n) [y]: ").toLowerCase();
+    const confirmation = prompt("Confirm (y/n) [y]: ");
 
     // If the user cancels, cancel the process.
-    if (!["", "y", "yes"].includes(confirmation)) {
+    if (
+        !confirmation ||
+        !["", "y", "yes"].includes(confirmation.toLowerCase())
+    ) {
         cancel();
     }
 

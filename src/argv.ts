@@ -37,17 +37,9 @@ interface Flag {
     required?: boolean;
 }
 
-// Display help message if requested.
-// if (flags.h || flags.help) {
-//     console.log(`Usage: template-defaults [projectType] [projectDir] [projectName] [projectGitRepo] [configureEslint] [installDep]
-
-//     Options:
-//         -d, --debug: Debug mode.
-//         -y, --yes:  Skip prompts.
-//         -h, --help: Show help message.`);
-//     cancel("", 0);
-// }
-
+/**
+ * A list of flags and their descriptions.
+ */
 const flagsList = [
     {
         // name: ["d", "debug"],
@@ -69,20 +61,33 @@ const flagsList = [
     },
 ] as const satisfies Flag[];
 
-// TODO: Implement this.
+/**
+ * A record of the processed flag keys and their values.
+ * @example
+ * type Test = { debug: string | boolean, yes: string | boolean, ... };
+ */
 type FlagsProcessed = Record<
     {
-        [K in keyof typeof flagsList]: (typeof flagsList)[K]["name"] extends string[]
-            ? (typeof flagsList)[K]["name"][0]
-            : (typeof flagsList)[K]["name"];
+        [K in keyof typeof flagsList]: (typeof flagsList)[K]["name" &
+            keyof (typeof flagsList)[K]] extends string[]
+            ? (typeof flagsList)[K]["name" & keyof (typeof flagsList)[K]][0]
+            : (typeof flagsList)[K]["name" & keyof (typeof flagsList)[K]];
     }[number],
     string | boolean
 >;
 
 /**
+ * The default flags
+ * @example const defaultFlags = { debug: false, yes: false, ... };
+ */
+const defaultFlags = Object.fromEntries(
+    flagsList.map((f) => [f.name[0], f.defaultValue || false]),
+) as FlagsProcessed;
+
+/**
  * Extracts command-line arguments and flags from the process arguments.
  */
-const [args, flags] = ((): [string[], Record<string, string | boolean>] => {
+const [args, flags] = ((): [string[], FlagsProcessed] => {
     const argsArray: string[] = [];
     const flagsRecord: Record<string, string | boolean> = {};
 
@@ -94,19 +99,60 @@ const [args, flags] = ((): [string[], Record<string, string | boolean>] => {
             const [flag, value] = item.split("=");
 
             // If there is a value, set the flag to the value. Otherwise, set it to true.
-            flagsRecord[flag] = value || true;
+            switch (value) {
+                case "true":
+                    flagsRecord[flag] = true;
+                    break;
+                case "false":
+                    flagsRecord[flag] = false;
+                    break;
+                default:
+                    flagsRecord[flag] = value || true;
+                    break;
+            }
         } else {
             // If it is an argument, push it to the args array.
             argsArray.push(item);
         }
     });
 
-    return [argsArray, flagsRecord];
+    // Process the flags list.
+
+    // Merge the default flags with the processed flags.
+    const mergedFlags: Record<string, string | boolean> = {};
+
+    // For each flag in the flags list, there could be multiple aliases. Merge them.
+    // Ex. cmd --myflag=1 --m=2 --> { myflag: 1 } // myflag takes precedence over m.
+    flagsList.forEach((flagData) => {
+        /**
+         * The first item in the name array is the full name of the flag.
+         * It is used to access the flag.
+         */
+        const flagName = flagData.name[0];
+
+        // Set the default value to the default flag value.
+        let flagValue: string | boolean = defaultFlags[flagName];
+
+        // Iterate through each flag name, and if it is in the flags record, set the value to the flag
+        for (const flagIndiviualName of flagData.name) {
+            if (flagsRecord[flagIndiviualName]) {
+                flagValue = flagsRecord[flagIndiviualName];
+                break;
+            }
+        }
+
+        // Set the flag value to the merged flags.
+        mergedFlags[flagName] = flagValue;
+    });
+
+    return [argsArray, mergedFlags as FlagsProcessed];
 })();
 
 // If the debug flag is set, log the arguments and flags.
-if (flags.d || flags.debug)
-    console.log("Argv", argv, "Args:", args, "\n", "Flags:", flags);
+if (flags.debug) {
+    console.log("Arguments:", args);
+    console.log("Flags:", flags);
+}
 
 // TODO: Implement dynamic help message.
 /**

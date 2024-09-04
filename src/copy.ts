@@ -130,7 +130,8 @@ function copyFiles(projectOptions: PromptOptionValues): void {
     const messages = [
         {
             message: "npm install",
-            condition: installDep && ["y", "yes", "true"].includes(installDep),
+            condition:
+                !installDep || !["y", "yes", "true"].includes(installDep),
         },
         {
             message: "npm start",
