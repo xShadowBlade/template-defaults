@@ -148,11 +148,27 @@ const [args, flags] = ((): [string[], FlagsProcessed] => {
     return [argsArray, mergedFlags as FlagsProcessed];
 })();
 
-// If the debug flag is set, log the arguments and flags.
-if (flags.debug) {
-    console.log("Arguments:", args);
-    console.log("Flags:", flags);
+/**
+ * Logs a message if debug mode is enabled.
+ * @param message - The message to log.
+ * @param optionalParams - The optional parameters to log. (see {@link console.log})
+ */
+function debugLog(message: string, ...optionalParams: unknown[]): void {
+    /**
+     * The prefix/color for the debug message.
+     * See {@link https://stackoverflow.com/a/41407246/4808079} for more colors.
+     * @example "[DEBUG] %s"
+     */
+    const consoleColor = "\x1b[42m[DEBUG]\x1b[0m " + "\x1b[32m%s\x1b[0m";
+
+    if (flags.debug) {
+        console.log(consoleColor, message, ...optionalParams);
+    }
 }
+
+// If the debug flag is set, log the arguments and flags.
+debugLog("Arguments:", args);
+debugLog("Flags:", flags);
 
 // TODO: Implement dynamic help message.
 /**
@@ -168,4 +184,4 @@ function displayHelp(): void {
     cancel("", 0);
 }
 
-export { args, flags, displayHelp };
+export { args, flags, displayHelp, debugLog };

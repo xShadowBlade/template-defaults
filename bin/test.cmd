@@ -9,5 +9,5 @@ rmdir /s /q test
 mkdir test
 
 cd test
-node ..
+node .. -d
 cd ..

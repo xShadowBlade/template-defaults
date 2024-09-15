@@ -11,15 +11,29 @@ import type { ProjectType } from "./lib";
 type PromptOptions = Readonly<{
     /**
      * The inital prompt when asking the question
-     * @example "Project type (valid types: 'ts', 'react-ts', 'html-ts'): "
+     * @example "Project type (valid types: "ts", "react-ts", "html-ts"): "
      */
     initPrompt: string;
 
     /**
-     * The meessage when nothing is entered
-     * @example "Using default type 'ts'."
+     * The meesage when nothing is entered
+     * @example "Using default type "ts"."
      */
     defaultMessage?: string;
+
+    /**
+     * A function to normalize the input
+     * @example (input: string) => input.toLowerCase()
+     * @default
+     *
+    // Normalize the input.
+    normalize = (input: string) => input
+        .toLowerCase()
+        .trim()
+        // Remove all characters except a-z and hyphens.
+        .replace(/[^a-z-]/g, "");
+     */
+    normalize?: (input: string) => string;
 
     /**
      * The default value for the prompt
@@ -54,8 +68,8 @@ const promptOptions = {
      * The project type
      */
     projectType: {
-        initPrompt: "Project type (valid types: 'ts', 'react-ts', 'html-ts'): ",
-        defaultMessage: "Using default type 'ts'.",
+        initPrompt: `Project type (valid types: "ts", "react-ts", "html-ts"): `,
+        defaultMessage: `Using default type "ts".`,
         defaultValue: "ts" as ProjectType,
     },
 
@@ -64,7 +78,7 @@ const promptOptions = {
      */
     projectDir: {
         initPrompt: "Project directory: ",
-        defaultMessage: "Using the current working directory.",
+        defaultMessage: `Using the current working directory: "${process.cwd()}"`,
         defaultValue: ".",
     },
 
@@ -73,7 +87,7 @@ const promptOptions = {
      */
     projectName: {
         initPrompt: "Project name: ",
-        defaultMessage: "Using default name 'my-project'.",
+        defaultMessage: `Using default name "my-project".`,
         defaultValue: "my-project",
     },
 
@@ -82,9 +96,10 @@ const promptOptions = {
      */
     projectGitRepo: {
         initPrompt: "Project git repo: ",
-        defaultMessage:
-            "Using default repo 'https://github.com/xShadowBlade/template-defaults', which is the template-defaults repo.",
+        defaultMessage: `Using default repo "https://github.com/xShadowBlade/template-defaults", which is the template-defaults repo.`,
         defaultValue: "https://github.com/xShadowBlade/template-defaults",
+        // Use custom normalize function to allow for urls.
+        normalize: (input: string): string => input.trim(),
     },
 
     /**
@@ -92,7 +107,7 @@ const promptOptions = {
      */
     configureEslint: {
         initPrompt: "Configure ESLint (y/n) [y]: ",
-        defaultMessage: "Using default value 'y'.",
+        defaultMessage: `Using default value "y".`,
         defaultValue: "y",
     },
 
@@ -101,7 +116,7 @@ const promptOptions = {
      */
     installDep: {
         initPrompt: "Install dependencies (y/n) [y]: ",
-        defaultMessage: "Using default value 'y'.",
+        defaultMessage: `Using default value "y".`,
         defaultValue: "y",
     },
 } satisfies Record<string, PromptOptions>;
@@ -156,15 +171,19 @@ function setDefaultPrompt<T extends PromptOptions>(
     if ((prompted as string | null) === null) cancel(cancelMessage, cancelCode);
 
     // Normalize the input.
-    prompted = prompted
-        .toLowerCase()
-        .trim()
-        // Remove all characters except a-z and hyphens.
-        .replace(/[^a-z-]/g, "");
+    if (promptOption.normalize) {
+        prompted = promptOption.normalize(prompted);
+    } else {
+        prompted = prompted
+            .toLowerCase()
+            .trim()
+            // Remove all characters except a-z and hyphens.
+            .replace(/[^a-z-]/g, "");
+    }
 
     // If the input is empty, use the default value.
     if (!prompted) {
-        console.log(defaultMessage ?? `Using default value '${defaultValue}'.`);
+        console.log(defaultMessage ?? `Using default value "${defaultValue}".`);
         prompted = defaultValue;
     }
 
@@ -201,7 +220,7 @@ function walkThrough(): typeof promptDefaultOptions {
 
     // If the user cancels, cancel the process.
     if (
-        !confirmation ||
+        confirmation === null ||
         !["", "y", "yes"].includes(confirmation.toLowerCase())
     ) {
         cancel();

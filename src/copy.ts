@@ -69,6 +69,7 @@ function copyFiles(projectOptions: PromptOptionValues): void {
             "@eslint/js",
             "@types/eslint__js",
             "eslint",
+            "eslint-config-prettier",
             "eslint-plugin-jsdoc",
             "eslint-plugin-prettier",
             "prettier",
