@@ -4,6 +4,11 @@
 import { argv } from "node:process";
 import { cancel } from "./lib";
 
+const VERSION = "1.0.1";
+
+/**
+ * A flag for the CLI.
+ */
 interface Flag {
     /**
      * The name of the flag, or any aliases/shortcuts.
@@ -172,13 +177,16 @@ debugLog("Flags:", flags);
  * Displays the help message.
  */
 function displayHelp(): void {
-    console.log(`Usage: template-defaults [projectType] [projectDir] [projectName] [projectGitRepo] [configureEslint] [installDep]
+    console.log(`
+Template Defaults CLI Tool v${VERSION}
+    
+Usage: template-defaults [projectType] [projectDir] [projectName] [projectGitRepo] [configureEslint] [installDep]
 
-        Options:
-            -d, --debug: Debug mode.
-            -y, --yes:  Skip prompts.
-            -h, --help: Show help message.`);
+Options:
+    -d, --debug: Debug mode.
+    -y, --yes:  Skip prompts.
+    -h, --help: Show help message.`);
     cancel("", 0);
 }
 
-export { args, flags, displayHelp, debugLog };
+export { args, flags, VERSION, displayHelp, debugLog };

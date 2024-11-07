@@ -17,7 +17,7 @@ const commonDir = path.join(distDir, "common");
 /**
  * The types of projects that can be created.
  */
-type ProjectType = "ts" | "react-ts" | "html-ts";
+type ProjectType = "ts" | "react-ts" | "html-ts" | "react-tailwind-vite-ts";
 
 /**
  * The project types. Read from the templates directory for subdirectories.

@@ -2,7 +2,7 @@
  * @file Defines the options for making a copy of the source files,
  * as well as the function to walk the user through the process of creating a new project.
  */
-import { cancel, prompt } from "./lib";
+import { cancel, projectTypes, prompt } from "./lib";
 import type { ProjectType } from "./lib";
 
 /**
@@ -68,7 +68,7 @@ const promptOptions = {
      * The project type
      */
     projectType: {
-        initPrompt: `Project type (valid types: "ts", "react-ts", "html-ts"): `,
+        initPrompt: `Project type (valid types: ${projectTypes.map((x) => `"${x}"`).join(", ")}): `,
         defaultMessage: `Using default type "ts".`,
         defaultValue: "ts" as ProjectType,
     },
