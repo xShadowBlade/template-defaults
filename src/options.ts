@@ -150,16 +150,8 @@ const promptDefaultOptions: PromptOptionValues = ((): PromptOptionValues => {
  * @param promptOption - The options for the prompt.
  * @returns The prompted value.
  */
-function setDefaultPrompt<T extends PromptOptions>(
-    promptOption: T,
-): T["defaultValue"] {
-    const {
-        initPrompt,
-        defaultMessage,
-        defaultValue,
-        cancelMessage,
-        cancelCode,
-    } = promptOption;
+function setDefaultPrompt<T extends PromptOptions>(promptOption: T): T["defaultValue"] {
+    const { initPrompt, defaultMessage, defaultValue, cancelMessage, cancelCode } = promptOption;
 
     /**
      * The prompted value, after asking the user.
@@ -199,12 +191,8 @@ function setDefaultPrompt<T extends PromptOptions>(
  */
 function walkThrough(): typeof promptDefaultOptions {
     // Log the introduction.
-    console.log(
-        "This CLI tool will create a new project in the specified directory.",
-    );
-    console.log(
-        "For more information, see https://github.com/xShadowBlade/template-defaults",
-    );
+    console.log("This CLI tool will create a new project in the specified directory.");
+    console.log("For more information, see https://github.com/xShadowBlade/template-defaults");
     console.log("Press ^C at any time to cancel. \n");
 
     const out = {} as typeof promptDefaultOptions;
@@ -219,10 +207,7 @@ function walkThrough(): typeof promptDefaultOptions {
     const confirmation = prompt("Confirm (y/n) [y]: ");
 
     // If the user cancels, cancel the process.
-    if (
-        confirmation === null ||
-        !["", "y", "yes"].includes(confirmation.toLowerCase())
-    ) {
+    if (confirmation === null || !["", "y", "yes"].includes(confirmation.toLowerCase())) {
         cancel();
     }
 

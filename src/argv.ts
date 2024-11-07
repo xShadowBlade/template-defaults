@@ -68,8 +68,7 @@ const flagsList = [
  */
 type FlagsProcessed = Record<
     {
-        [K in keyof typeof flagsList]: (typeof flagsList)[K]["name" &
-            keyof (typeof flagsList)[K]] extends string[]
+        [K in keyof typeof flagsList]: (typeof flagsList)[K]["name" & keyof (typeof flagsList)[K]] extends string[]
             ? (typeof flagsList)[K]["name" & keyof (typeof flagsList)[K]][0]
             : (typeof flagsList)[K]["name" & keyof (typeof flagsList)[K]];
     }[number],
@@ -80,9 +79,7 @@ type FlagsProcessed = Record<
  * The default flags
  * @example const defaultFlags = { debug: false, yes: false, ... };
  */
-const defaultFlags = Object.fromEntries(
-    flagsList.map((f) => [f.name[0], f.defaultValue || false]),
-) as FlagsProcessed;
+const defaultFlags = Object.fromEntries(flagsList.map((f) => [f.name[0], f.defaultValue || false])) as FlagsProcessed;
 
 /**
  * Extracts command-line arguments and flags from the process arguments.
@@ -134,9 +131,9 @@ const [args, flags] = ((): [string[], FlagsProcessed] => {
         let flagValue: string | boolean = defaultFlags[flagName];
 
         // Iterate through each flag name, and if it is in the flags record, set the value to the flag
-        for (const flagIndiviualName of flagData.name) {
-            if (flagsRecord[flagIndiviualName]) {
-                flagValue = flagsRecord[flagIndiviualName];
+        for (const flagIndividualName of flagData.name) {
+            if (flagsRecord[flagIndividualName]) {
+                flagValue = flagsRecord[flagIndividualName];
                 break;
             }
         }

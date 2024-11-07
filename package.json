@@ -19,8 +19,8 @@
   "scripts": {
     "build": "esbuild ./src/index.ts --bundle --minify --platform=node --outfile=./dist/index.js",
     "dev": "esbuild ./src/index.ts --bundle --platform=node --outfile=./dist/index.js --watch",
-    "lint": "eslint ./src --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

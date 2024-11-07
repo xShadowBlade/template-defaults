@@ -14,14 +14,7 @@ import type { PromptOptionValues } from "./options";
  * @param projectOptions - The options for copying the files.
  */
 function copyFiles(projectOptions: PromptOptionValues): void {
-    const {
-        projectType,
-        projectDir,
-        projectName,
-        projectGitRepo,
-        configureEslint,
-        installDep,
-    } = projectOptions;
+    const { projectType, projectDir, projectName, projectGitRepo, configureEslint, installDep } = projectOptions;
 
     /**
      * The path to the project directory.
@@ -79,11 +72,7 @@ function copyFiles(projectOptions: PromptOptionValues): void {
 
         // For each eslint dev dependency, remove the dependency from package.json.
         eslintDevDeps.forEach((dep) => {
-            replaceInFile(
-                packageJsonPath,
-                new RegExp(`\n {4}"${dep}": ".*",`),
-                "",
-            );
+            replaceInFile(packageJsonPath, new RegExp(`\n {4}"${dep}": ".*",`), "");
         });
 
         // Remove empty lines.
@@ -95,23 +84,11 @@ function copyFiles(projectOptions: PromptOptionValues): void {
     replaceInFile(packageJsonPath, /"url": ".*"/, `"url": "${projectGitRepo}"`);
 
     // Replace the issues and homepage URLs in package.json
-    replaceInFile(
-        packageJsonPath,
-        /"url": ".*\/issues"/,
-        `"url": "${projectGitRepo}/issues"`,
-    );
-    replaceInFile(
-        packageJsonPath,
-        /"homepage": ".*"/,
-        `"homepage": "${projectGitRepo}#readme"`,
-    );
+    replaceInFile(packageJsonPath, /"url": ".*\/issues"/, `"url": "${projectGitRepo}/issues"`);
+    replaceInFile(packageJsonPath, /"homepage": ".*"/, `"homepage": "${projectGitRepo}#readme"`);
 
     // Replace package name in package-lock.json
-    replaceInFile(
-        packageLockJsonPath,
-        `"name": "${projectType}"`,
-        `"name": "${projectName}"`,
-    );
+    replaceInFile(packageLockJsonPath, `"name": "${projectType}"`, `"name": "${projectName}"`);
 
     // Install dependencies if the user chooses to.
     if (installDep && ["y", "yes", "true"].includes(installDep)) {
@@ -131,8 +108,7 @@ function copyFiles(projectOptions: PromptOptionValues): void {
     const messages = [
         {
             message: "npm install",
-            condition:
-                !installDep || !["y", "yes", "true"].includes(installDep),
+            condition: !installDep || !["y", "yes", "true"].includes(installDep),
         },
         {
             message: "npm start",
@@ -141,8 +117,7 @@ function copyFiles(projectOptions: PromptOptionValues): void {
     ];
 
     // If any of the conditions are met, log the messages.
-    if (messages.some((msg) => msg.condition))
-        console.log("To get started, run the following commands:");
+    if (messages.some((msg) => msg.condition)) console.log("To get started, run the following commands:");
 
     messages.forEach((msg) => {
         // If the condition is met, log the message.

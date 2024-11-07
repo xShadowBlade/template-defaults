@@ -23,9 +23,7 @@ type ProjectType = "ts" | "react-ts" | "html-ts";
  * The project types. Read from the templates directory for subdirectories.
  * @example ["ts", "react-ts", "html-ts"]
  */
-const projectTypes = fs.readdirSync(
-    path.join(distDir, "templates"),
-) as ProjectType[];
+const projectTypes = fs.readdirSync(path.join(distDir, "templates")) as ProjectType[];
 
 /**
  * Cancels the process with a message and code.
@@ -43,11 +41,7 @@ function cancel(message = "Cancelled.", code = 0): void {
  * @param searchValue - The value to search for.
  * @param replaceValue - The value to replace with.
  */
-function replaceInFile(
-    filePath: string,
-    searchValue: string | RegExp,
-    replaceValue: string,
-): void {
+function replaceInFile(filePath: string, searchValue: string | RegExp, replaceValue: string): void {
     // Check if the file exists.
     if (!fs.existsSync(filePath)) {
         // Silently return if the file does not exist (sometimes package-lock.json does not exist).
