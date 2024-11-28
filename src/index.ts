@@ -11,10 +11,14 @@ import { copyFiles } from "./copy";
 // Display help message if requested.
 if (flags.help) displayHelp();
 
+// Set the prompt options.
 const promptOptions = Object.assign(
     promptDefaultOptions,
     ((): typeof promptDefaultOptions => {
+        // If the yes flag is enabled, return the default options.
         if (flags.yes) return {} as typeof promptDefaultOptions;
+
+        // Otherwise, walk the user through the process.
         return walkThrough();
     })(),
 );

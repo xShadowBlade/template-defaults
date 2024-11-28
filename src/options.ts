@@ -22,6 +22,24 @@ type PromptOptions = Readonly<{
     defaultMessage?: string;
 
     /**
+     * Validation options.
+     * Note: called before the normalize function.
+     */
+    validate?: {
+        /**
+         * The regexp the input should match
+         * @example /^ts|react-ts|html-ts$/
+         */
+        match: RegExp;
+
+        /**
+         * The message that is printed on fail
+         * @example "Invalid project type. Valid types: ts, react-ts, html-ts"
+         */
+        messageOnFail: string;
+    };
+
+    /**
      * A function to normalize the input
      * @example (input: string) => input.toLowerCase()
      * @default
@@ -71,6 +89,12 @@ const promptOptions = {
         initPrompt: `Project type (valid types: ${projectTypes.map((x) => `"${x}"`).join(", ")}): `,
         defaultMessage: `Using default type "ts".`,
         defaultValue: "ts" as ProjectType,
+
+        // Make sure the project type is valid.
+        validate: {
+            match: new RegExp(`^(${projectTypes.join("|")})$`),
+            messageOnFail: `Invalid project type. Valid types: ${projectTypes.join(", ")}`,
+        },
     },
 
     /**
@@ -161,6 +185,18 @@ function setDefaultPrompt<T extends PromptOptions>(promptOption: T): T["defaultV
 
     // If the user cancels (by pressing ^C = null), cancel the process.
     if ((prompted as string | null) === null) cancel(cancelMessage, cancelCode);
+
+    // Validate the input if a validation function is provided.
+    if (promptOption.validate) {
+        // If the input does not match the validation, print the message and ask again.
+        while (!promptOption.validate.match.test(prompted)) {
+            console.log(promptOption.validate.messageOnFail);
+            prompted = prompt(initPrompt);
+
+            // If the user cancels (by pressing ^C = null), cancel the process.
+            if ((prompted as string | null) === null) cancel(cancelMessage, cancelCode);
+        }
+    }
 
     // Normalize the input.
     if (promptOption.normalize) {
