@@ -29,7 +29,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.5.2",
     "@types/prompt-sync": "^4.2.3",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.1",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsdoc": "^50.2.2",
