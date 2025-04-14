@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
     "@types/css-modules": "^1.0.4",
     "@types/eslint__js": "^8.42.3",
     "@types/react": "^19.0.3",
-    "@types/react-dom": "^19.0.2",
+    "@types/react-dom": "^19.1.1",
     "copy-webpack-plugin": "^12.0.1",
     "css-loader": "^7.1.1",
     "css-minimizer-webpack-plugin": "^7.0.0",
